@@ -48,7 +48,7 @@ var simplemaps_worldmap_mapdata={
     popup_nocss: "no",
     div: "map",
     auto_load: "yes",
-    url_new_tab: "yes",   // intercepted by window.open override in index.html
+    url_new_tab: "no",   // intercepted by window.open override in index.html
     images_directory: "default",
     fade_time: 0.1,
     link_text: "View Website",
