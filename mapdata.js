@@ -376,5 +376,5 @@ var simplemaps_worldmap_mapdata={
     "2": {name:"Europe",  states:["AL","AD","AT","BY","BE","BA","BV","BG","HR","CY","CZ","DK","EE","FO","FK","FI","FR","TF","DE","GI","GR","GL","GG","VA","HU","IS","IE","IM","IT","JE","LV","LI","LT","LU","MK","MT","MD","MC","NL","NO","PL","PT","RO","RU","SM","RS","ME","XK","SK","SI","ES","SJ","SE","CH","UA","GB","TR"], color:"#0081c8"},
     "3": {name:"Africa",  states:["DZ","AO","BJ","BW","BF","BI","CM","CV","CF","TD","CG","CI","MG","MW","ML","MU","MR","MA","NA","NE","NG","CD","EG","ER","ET","GA","GH","GN","LS","ST","SN","SC","SL","SO","ZA","SZ","TZ","TG","TN","UG","ZM","ZW","LY","SD","SS","KE","MZ","RW","LR","GW","EH"], color:"#000000"},
     "5": {name:"Asia",    states:["AF","AM","AZ","BH","BD","BT","BN","KH","CN","TL","GE","HK","IN","ID","IR","IQ","IL","JP","JO","KZ","KP","KR","KW","KG","LA","LB","MO","MY","MN","MM","NP","OM","PK","PH","QA","SA","SG","LK","SY","TW","TJ","TH","TM","AE","UZ","VN","YE"], color:"#fcb131"}
-  }
+  } 
 };
