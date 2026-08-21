@@ -8,7 +8,6 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: transparent; overflow: hidden; }
     #map { width: 100%; }
-    /* Hide the simplemaps trial watermark */
     a[href="https://simplemaps.com"],
     a[href*="simplemaps.com"][title*="evaluation"] {
       display: none !important;
@@ -17,42 +16,45 @@
     }
   </style>
   <!--
-    FIX: force same-tab navigation of the TOP window (replaces the Google Sites page).
-    Two layers:
-      1) Override window.open so any attempt to open a new tab is redirected to window.top.
-      2) Capture-phase click listener that catches <a target="_blank"> before the browser
-         acts on it, and navigates window.top instead.
+    Cross-origin safe navigation.
+    When embedded in Google Sites, this map lives in a cross-origin iframe, so
+    window.top.location.href is BLOCKED by the browser (that is why clicks did
+    nothing on the live site but worked on the raw github.io page).
+    Fix: navigate the top-level browsing context with a named target ("_top"),
+    which browsers DO allow across origins. We hijack the generated links'
+    target so simplemaps' own navigation lands in the top window / same tab.
   -->
   <script>
     (function() {
-      function goTop(url) {
-        try { window.top.location.href = url; }
-        catch (e) { window.location.href = url; }
+      function goTopSameTab(url) {
+        // _top = replace the whole top-level page in the SAME tab (allowed cross-origin)
+        var w = window.open(url, '_top');
+        if (!w) {
+          // last-resort fallbacks
+          try { window.top.location.href = url; }
+          catch (e) { window.location.href = url; }
+        }
       }
 
-      // Layer 1: neutralize window.open for metliner links
+      // Redirect any window.open for metliner links into the top, same tab
       var _origOpen = window.open;
       window.open = function(url, target, features) {
         if (url && url.indexOf('metliner.com') !== -1) {
-          goTop(url);
-          return null;
+          return _origOpen.call(window, url, '_top');
         }
         return _origOpen.call(window, url, target, features);
       };
 
-      // Layer 2: intercept clicks on generated links in the capture phase,
-      // before simplemaps / the browser opens a new tab.
+      // Catch clicks on the generated <a> links and force target="_top"
+      // so the parent (Google Sites) page navigates in the same tab.
       document.addEventListener('click', function(e) {
         var a = e.target;
         while (a && a.tagName !== 'A') { a = a.parentNode; }
         if (a && a.href && a.href.indexOf('metliner.com') !== -1) {
-          e.preventDefault();
-          e.stopPropagation();
-          goTop(a.href);
+          a.setAttribute('target', '_top'); // let the browser do the navigation
         }
-      }, true); // <-- true = capture phase, runs before other handlers
+      }, true);
 
-      // Hide the simplemaps trial watermark (unchanged)
       function hideTrial() {
         var links = document.querySelectorAll('a[href*="simplemaps.com"]');
         links.forEach(function(el) {
